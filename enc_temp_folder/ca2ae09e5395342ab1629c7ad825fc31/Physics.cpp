@@ -6,7 +6,7 @@ using namespace std;
 #define WEIGHT   46.7   // Weight in KG
 
 /***************************************************
-    * COMPUTE DISTANCE https://prod.liveshare.vsengsaas.visualstudio.com/join?7A748087B49A33D11D153DAD2FAC76C227D1
+    * COMPUTE DISTANCE
     * Apply inertia to compute a new position using the distance equation.
     * The equation is:
     *     s = s + v t + 1/2 a t^2
@@ -214,6 +214,13 @@ double lawOfMotion(double mass, double acceleration) {
 * Returns 
 *******************************************/
 double linearInterpolation(double d0, double r0, double d1, double r1, double r) {
+    double total = r1 - r0;
+    double temp = d1 - d0;
+    total = temp / total;
+    temp = r - r0;
+    total = temp * total;
+    total = d0 + total;
+
     return d0 + (r - r0) * ((d1 - d0) / (r1 - r0));
 }
 
@@ -226,7 +233,7 @@ double findGravity(double altitude1) {
             return -9.807;
         }
         if (altitude[i] > altitude1) {
-            return linearInterpolation(gravity[i - 1], altitude[i - 1], gravity[i], altitude[i], altitude1);
+            return linearInterpolation(altitude[i - 1], gravity[i - 1], altitude[i], gravity[i], altitude1);
         }
     }
 
