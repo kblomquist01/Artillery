@@ -34,11 +34,10 @@ double computeDistance(double s, double v, double a, double t) {
     *     a : acceleration, in meters/second^2
     ***************************************************/
 
-//double computeAcceleration(double f, double m)
-//{
-//    double a = f / m;
-//    return a;
-//}
+double computeAcceleration(double f, double m)
+{
+    return f / m;
+}
 
 /***********************************************
     * COMPUTE VELOCITY
@@ -198,16 +197,6 @@ double findAreaOfCircle(double radius) {
 }
 
 /*******************************************
-* Newton's second law of motion 
-* Return force 
-*******************************************/
-double lawOfMotion(double mass, double force) {
-    //f = m a
-    //f/ m = a
-    return force/ mass;
-}
-
-/*******************************************
 * Linear interpolation equation 
 * (r - r0) / (d - d0) = (r1 - r0) / (d1 - d0)
 * where d0,r0 are the coordinates of one point 
@@ -300,7 +289,6 @@ double findDensity(double altitude1) {
     return density[19];
 }
 
-
 /*******************************************
 * Find angle from components 
 * Equation: a = atan2(dx, dy)
@@ -352,8 +340,9 @@ int main() {
         }
         dragy = -findVerticalComponent(angle, velocity);
 
-        dy = computeVelocity(dy, gravity + lawOfMotion(WEIGHT, dragy), .01);
-        dx = computeVelocity(dx, lawOfMotion(WEIGHT, dragx), .01);
+        // computeAcceleration parameters are (force, then mass) 
+        dy = computeVelocity(dy, gravity + computeAcceleration(dragy, WEIGHT), .01);
+        dx = computeVelocity(dx, computeAcceleration(dragx, WEIGHT), .01);
 
         x = computeDistance(x, dx, dragx, .01);
         y = computeDistance(y, dy, dragy + gravity, .01);
