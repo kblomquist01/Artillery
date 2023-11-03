@@ -300,6 +300,7 @@ double findDensity(double altitude1) {
     return density[19];
 }
 
+
 /*******************************************
 * Find angle from components 
 * Equation: a = atan2(dx, dy)
@@ -307,10 +308,10 @@ double findDensity(double altitude1) {
 * dx is the horizontal component of speed (m/s)
 * dy is the vertical component of speed (m/s)
 *******************************************/
-//double findAngle()
-//{
-//    return atan2(dx, dy);
-//}
+double findAngle(float dx, float dy)
+{
+    return atan2(dx, dy);
+}
 
 
 int main() {
@@ -324,6 +325,7 @@ int main() {
     double mach = 0;
     double dragx = 0.3;
     double dragy = .3;
+    double drag = 0;
     double airDensity = 0.6;
     double surfaceArea = 3.14159 * (0.077445 * 0.077445);
     double gravity = -9.8;
@@ -336,15 +338,23 @@ int main() {
         gravity = findGravity(y);
         airDensity = (findDensity(y));
 
+        angle = findAngle(dx, dy);
+        velocity = findTotalComponent(dx,dy);
+        drag = findDrag(findDragCoefficient(velocity / findSpeed(y)), airDensity, velocity, surfaceArea);
+
+
+
         if (dx > 0) {
-            dragx = -findDrag(findDragCoefficient(dx / findSpeed(y)), airDensity, dx, surfaceArea);
+            dragx = -findHorizontalComponent(angle,velocity);
         }
         else {
-            dragx = findDrag(findDragCoefficient(dx / findSpeed(y)), airDensity, dx, surfaceArea);
+            dragx = findHorizontalComponent(angle, velocity);
         }
-        dragy = -findDrag(findDragCoefficient(dy / findSpeed(y)), airDensity, dy, surfaceArea);
+        dragy = -findVerticalComponent(angle, velocity);
+
         dy = computeVelocity(dy, gravity + lawOfMotion(WEIGHT, dragy), .01);
         dx = computeVelocity(dx, lawOfMotion(WEIGHT, dragx), .01);
+
         x = computeDistance(x, dx, dragx, .01);
         y = computeDistance(y, dy, dragy + gravity, .01);
 

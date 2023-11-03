@@ -15,7 +15,6 @@ public:
 	double getDY();
 private:
 	#define WEIGHT   46.7   // Weight in KG
-	#define GRAVITY  0.0 // start at 0 for testing  -9.8   // Vertical acceleration due to gravity, in m/s^2
 	double x;
 	double y;
 	float dx;
