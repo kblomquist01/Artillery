@@ -34,11 +34,10 @@ double computeDistance(double s, double v, double a, double t) {
     *     a : acceleration, in meters/second^2
     ***************************************************/
 
-//double computeAcceleration(double f, double m)
-//{
-//    double a = f / m;
-//    return a;
-//}
+double computeAcceleration(double f, double m)
+{
+    return f / m;
+}
 
 /***********************************************
     * COMPUTE VELOCITY
@@ -198,16 +197,6 @@ double findAreaOfCircle(double radius) {
 }
 
 /*******************************************
-* Newton's second law of motion 
-* Return force 
-*******************************************/
-double lawOfMotion(double mass, double force) {
-    //f = m a
-    //f/ m = a
-    return force/ mass;
-}
-
-/*******************************************
 * Linear interpolation equation 
 * (r - r0) / (d - d0) = (r1 - r0) / (d1 - d0)
 * where d0,r0 are the coordinates of one point 
@@ -300,7 +289,6 @@ double findDensity(double altitude1) {
     return density[19];
 }
 
-
 /*******************************************
 * Find angle from components 
 * Equation: a = atan2(dx, dy)
@@ -314,59 +302,60 @@ double findAngle(float dx, float dy)
 }
 
 
-//int main() {
-//    double angle = radiansFromDegrees(75);
-//    double x = 0;
-//    double y = .25;
-//    float velocity = 827;
-//    float dx = findHorizontalComponent(angle, velocity);
-//    float dy = findVerticalComponent(angle, velocity);
-//    double dragCoefficient = 0;
-//    double mach = 0;
-//    double dragx = 0.3;
-//    double dragy = .3;
-//    double drag = 0;
-//    double airDensity = 0.6;
-//    double surfaceArea = 3.14159 * (0.077445 * 0.077445);
-//    double gravity = -9.8;
-//
-//    double distance = 0; // in meters 
-//    double hangTime = 0;
-//    
-//    while(y + dy/100> 0) {
-//
-//        gravity = findGravity(y);
-//        airDensity = (findDensity(y));
-//
-//        angle = findAngle(dx, dy);
-//        velocity = findTotalComponent(dx,dy);
-//        drag = findDrag(findDragCoefficient(velocity / findSpeed(y)), airDensity, velocity, surfaceArea);
-//
-//
-//
-//        if (dx > 0) {
-//            dragx = -findHorizontalComponent(angle,velocity);
-//        }
-//        else {
-//            dragx = findHorizontalComponent(angle, velocity);
-//        }
-//        dragy = -findVerticalComponent(angle, velocity);
-//
-//        dy = computeVelocity(dy, gravity + lawOfMotion(WEIGHT, dragy), .01);
-//        dx = computeVelocity(dx, lawOfMotion(WEIGHT, dragx), .01);
-//
-//        x = computeDistance(x, dx, dragx, .01);
-//        y = computeDistance(y, dy, dragy + gravity, .01);
-//
-//        hangTime += .01;
-//        //cout << gravity << "g " << airDensity << "ad " << dragx << "drx " << dragy << "dry " << dy << "dy " << dx << "dx " << x << "x " << y << "y\n";
-//    }
-//
-//    x = linearInterpolation(x, y, x + dx/100, y + dy/100, 0);
-//    y = 0;
-//
-//    std::cout << "distance: " << x << "m Altitude: " << y << "m Hang time: " << hangTime << "s";
-//
-//
-//    return 0;
-//}
+int main() {
+    double angle = radiansFromDegrees(75);
+    double x = 0;
+    double y = .25;
+    float velocity = 827;
+    float dx = findHorizontalComponent(angle, velocity);
+    float dy = findVerticalComponent(angle, velocity);
+    double dragCoefficient = 0;
+    double mach = 0;
+    double dragx = 0.3;
+    double dragy = .3;
+    double drag = 0;
+    double airDensity = 0.6;
+    double surfaceArea = 3.14159 * (0.077445 * 0.077445);
+    double gravity = -9.8;
+
+    double distance = 0; // in meters 
+    double hangTime = 0;
+    
+    while(y + dy/100> 0) {
+
+        gravity = findGravity(y);
+        airDensity = (findDensity(y));
+
+        angle = findAngle(dx, dy);
+        velocity = findTotalComponent(dx,dy);
+        drag = findDrag(findDragCoefficient(velocity / findSpeed(y)), airDensity, velocity, surfaceArea);
+
+
+
+        if (dx > 0) {
+            dragx = -findHorizontalComponent(angle,velocity);
+        }
+        else {
+            dragx = findHorizontalComponent(angle, velocity);
+        }
+        dragy = -findVerticalComponent(angle, velocity);
+
+        // computeAcceleration parameters are (force, then mass) 
+        dy = computeVelocity(dy, gravity + computeAcceleration(dragy, WEIGHT), .01);
+        dx = computeVelocity(dx, computeAcceleration(dragx, WEIGHT), .01);
+
+        x = computeDistance(x, dx, dragx, .01);
+        y = computeDistance(y, dy, dragy + gravity, .01);
+
+        hangTime += .01;
+        //cout << gravity << "g " << airDensity << "ad " << dragx << "drx " << dragy << "dry " << dy << "dy " << dx << "dx " << x << "x " << y << "y\n";
+    }
+
+    x = linearInterpolation(x, y, x + dx/100, y + dy/100, 0);
+    y = 0;
+
+    cout << "distance: " << x << "m Altitude: " << y << "m Hang time: " << hangTime << "s";
+
+
+    return 0;
+}

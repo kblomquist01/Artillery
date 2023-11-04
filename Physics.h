@@ -9,10 +9,19 @@ public:
 	double findHorizontalComponent(double a, double total);
 	double findTotalComponent(double dx, double dy);
 	double radiansFromDegrees(double d);
-	void changeVelocity(double aRadians, bool thrusting);
-	double getTotalVelocity();
-	double getDX();
-	double getDY();
+	//void changeVelocity(double aRadians, bool thrusting);
+	//double getTotalVelocity();
+	//double getDX();
+	//double getDY();
+	double findDrag(double dragCoefficient, double density, double velocity, double area);
+	double findAreaOfCircle(double radius);
+	double linearInterpolation(double d0, double r0, double d1, double r1, double r);
+	double findGravity(double altitude1);
+	double findSpeed(double altitude1);
+	double findDragCoefficient(double speed1);
+	double findDensity(double altitude1);
+	double findAngle(float dx, float dy);
+	double getHistory();
 private:
 	#define WEIGHT   46.7   // Weight in KG
 	double x;
@@ -26,7 +35,5 @@ private:
 	int angle;
 	double distance; // in meters 
 	double hangTime; // in seconds 
-
-
 };
 
