@@ -2,6 +2,7 @@
 #include <iostream>  // for CIN and COUT
 using namespace std;
 #include <cmath>
+#include <iomanip>
 
 #define WEIGHT   46.7   // Weight in KG
 
@@ -141,45 +142,6 @@ double radiansFromDegrees(double d) {
     return (d / 360) * 2 * 3.14159265;
 }
 
-//void changeVelocity(double aRadians, bool thrusting)
-//{
-//    double time = .1;
-//
-////    double drag = findDrag(dragCoefficient, density, velocity, area);
-//
-//    double accelerationThrust = computeAcceleration(drag, WEIGHT);  // Acceleration due to thrust 
-//    double ddxThrust = findHorizontalComponent(aRadians, drag);           // Horizontal acceleration due to thrust
-//    double ddyThrust = findVerticalComponent(aRadians, drag);           // Vertical acceleration due to thrust
-//    double ddx = computeAcceleration(ddxThrust, WEIGHT);       //-2.105;          // Total horizontal acceleration
-//    double ddy = computeAcceleration(ddyThrust, WEIGHT) + GRAVITY;  //0.48;               // Total vertical acceleration
-//
-//    dx = computeVelocity(dx, ddx, time);
-//    dy = computeVelocity(dy, ddy, time);
-//}
-
-/*******************************************
-* RETURN
-* total velcocity
-*******************************************/
-//double getTotalVelocity() {
-//    return findTotalComponent(dx, dy);
-//}
-
-/*******************************************
-* RETURN
-* dx : X velocity
-*******************************************/
-//double getDX() {
-//    return dx;
-//}
-
-/*******************************************
-* RETURN
-* dy : Y velocity
-*******************************************/
-//double getDY() {
-//    return dy;
-//}
 
 /*******************************************
 * Drag Force Equation 
@@ -252,7 +214,7 @@ double findSpeed(double altitude1) { // speed of sound
 * using linear interpolation
 *******************************************/
 double findDragCoefficient(double speed1) {
-    double mach[16] = {0.300, 0.500, 0.700, 0.890, 0.920, 0.960, 0.980, 1.000, 1.020, 1.060, 1.240, 1.530, 1.990, 2.870, 2.890, 5.000};
+    double mach[16] =        {0.300,   0.500,  0.700,  0.890,  0.920,  0.960,  0.980,  1.000,  1.020,  1.060,  1.240,  1.530,  1.990,  2.870,  2.890,  5.000};
     double coefficient[16] = { 0.1629, 0.1659, 0.2031, 0.2597, 0.3010, 0.3287, 0.4002, 0.4258, 0.4335, 0.4483, 0.4064, 0.3663, 0.2897, 0.2297, 0.2306, 0.2656 };
 	
     for (int i = 1; i < 16; i++) {
@@ -303,7 +265,7 @@ double findAngle(float dx, float dy)
 
 
 int main() {
-    double angle = radiansFromDegrees(75);
+    double angle = radiansFromDegrees(-75);
     double x = 0;
     double y = .25;
     float velocity = 827;
@@ -325,30 +287,33 @@ int main() {
 
         gravity = findGravity(y);
         airDensity = (findDensity(y));
-
         angle = findAngle(dx, dy);
-        velocity = findTotalComponent(dx,dy);
-        drag = findDrag(findDragCoefficient(velocity / findSpeed(y)), airDensity, velocity, surfaceArea);
+        velocity = findTotalComponent(dx, dy);
+        mach = velocity / findSpeed(y);
 
+        dragCoefficient = findDragCoefficient(mach);
 
-
-        if (dx > 0) {
-            dragx = -findHorizontalComponent(angle,velocity);
-        }
-        else {
-            dragx = findHorizontalComponent(angle, velocity);
-        }
-        dragy = -findVerticalComponent(angle, velocity);
+        
+        drag = findDrag(dragCoefficient, airDensity, velocity, surfaceArea);
+        float acceleration = computeAcceleration(drag, WEIGHT);
+        float ddx = acceleration * -sin(angle);
+        float ddy = acceleration * -cos(angle) + gravity;
 
         // computeAcceleration parameters are (force, then mass) 
-        dy = computeVelocity(dy, gravity + computeAcceleration(dragy, WEIGHT), .01);
-        dx = computeVelocity(dx, computeAcceleration(dragx, WEIGHT), .01);
+        dy = computeVelocity(dy, ddy, .01);
+        dx = computeVelocity(dx, ddx, .01);
 
-        x = computeDistance(x, dx, dragx, .01);
-        y = computeDistance(y, dy, dragy + gravity, .01);
+        x = computeDistance(x, dx, ddx, .01);
+        y = computeDistance(y, dy, ddy, .01);
 
         hangTime += .01;
-        //cout << gravity << "g " << airDensity << "ad " << dragx << "drx " << dragy << "dry " << dy << "dy " << dx << "dx " << x << "x " << y << "y\n";
+        // << "Gravity: " << gravity << " X: " << x
+
+        cout << std::fixed << std::showpoint;
+        cout << std::setprecision(4);
+        cout << " airDensity: " << airDensity << " Drag: " << drag << " Velocity: " << velocity;
+        cout << " DY:  " << dy << " DX: " << dx  << " Y: " << y << " angle: " << angle;
+        cout << " Drag Coefficient: " << dragCoefficient << " Mach: " << mach << "\n";
     }
 
     x = linearInterpolation(x, y, x + dx/100, y + dy/100, 0);
