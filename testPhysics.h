@@ -121,10 +121,25 @@ private:
 		assert(phy.findVerticalComponent(1.047198, 5) > 3.99 && phy.findVerticalComponent(1.047198, 5) > 4.01);
 		//3 4 5 triangle short
 		assert(phy.findVerticalComponent(0.5235988, 5) > 2.99 && phy.findVerticalComponent(0.5235988, 5) > 3.01);
+		//3 4 5 triangle long negative angle
+		assert(phy.findVerticalComponent(-1.047198, 5) > 3.99 && phy.findVerticalComponent(1.047198, 5) > 4.01);
+		//3 4 5 triangle short negative angle
+		assert(phy.findVerticalComponent(-0.5235988, 5) > 2.99 && phy.findVerticalComponent(0.5235988, 5) > 3.01);
 	}
 
 	void testFindHorizontalComponent() {
+		Physics phy;
 
+		//zero
+		assert(phy.findVerticalComponent(0, 0) == 0);
+		//3 4 5 triangle long
+		assert(phy.findVerticalComponent(1.047198, 5) > 3.99 && phy.findVerticalComponent(1.047198, 5) > 4.01);
+		//3 4 5 triangle short
+		assert(phy.findVerticalComponent(0.5235988, 5) > 2.99 && phy.findVerticalComponent(0.5235988, 5) > 3.01);
+		//3 4 5 triangle long negative angle
+		assert(phy.findVerticalComponent(-1.047198, 5) > 3.99 && phy.findVerticalComponent(1.047198, 5) > 4.01);
+		//3 4 5 triangle short negative angle
+		assert(phy.findVerticalComponent(-0.5235988, 5) > 2.99 && phy.findVerticalComponent(0.5235988, 5) > 3.01);
 	}
 
 	void testFindTotalComponent() {
