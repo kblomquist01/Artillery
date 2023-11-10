@@ -7,7 +7,7 @@ using namespace std;
 #define WEIGHT   46.7   // Weight in KG
 
 /***************************************************
-    * COMPUTE DISTANCE https://prod.liveshare.vsengsaas.visualstudio.com/join?7A748087B49A33D11D153DAD2FAC76C227D1
+    * COMPUTE DISTANCE 
     * Apply inertia to compute a new position using the distance equation.
     * The equation is:
     *     s = s + v t + 1/2 a t^2

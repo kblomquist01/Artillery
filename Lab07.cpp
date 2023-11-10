@@ -70,7 +70,7 @@ void callBack(const Interface* pUI, void* p)
 
    //
    // accept input
-   //
+   // ask for angle 
 
    // move a large amount
    if (pUI->isRight())
@@ -105,6 +105,7 @@ void callBack(const Interface* pUI, void* p)
          x = pDemo->ptUpperRight.getPixelsX();
       pDemo->projectilePath[i].setPixelsX(x);
    }
+   // see if hitGround() and hitTarget() 
 
    //
    // draw everything
