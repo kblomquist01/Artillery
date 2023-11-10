@@ -150,15 +150,15 @@ private:
 
 	}
 
+	void testLinearInterpolation() {
+
+	}
+
 	void testFindDrag() {
 
 	}
 
 	void testFindAreaOfCircle() {
-
-	}
-
-	void testLinearInterpolation() {
 
 	}
 
