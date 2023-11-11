@@ -22,7 +22,22 @@ class TestPhysics
 {
 public:
 	void run() {
-
+		testComputeDistance();
+		testComputeAcceleration();
+		testComputeVelocity();
+		testFindVerticalComponent();
+		testFindHorizontalComponent();
+		testFindTotalComponent();
+		testRadiansFromDegrees();
+		testFindDrag();
+		testFindAreaOfCircle();
+		testLinearInterpolation();
+		testFindGravity();
+		testFindSpeed();
+		testFindDragCoefficient();
+		testFindDensity();
+		testFindAngle();
+		testGetHistory();
 	}
 private:
 	void testComputeDistance() {
@@ -132,7 +147,20 @@ private:
 	}
 
 	void testRadiansFromDegrees() {
+		Physics phy;
 
+		// small negative 
+		assert(phy.radiansFromDegrees(-1) > -0.0174532 && phy.radiansFromDegrees(-1) < -0.0174534);
+		// zero 
+		assert(phy.radiansFromDegrees(0) == 0);
+		// typical, 180 
+		assert(phy.radiansFromDegrees(180) > 3.14158 && phy.radiansFromDegrees(180) < 3.14160);
+		// almost 360
+		assert(phy.radiansFromDegrees(359) > 6.26572 && phy.radiansFromDegrees(359) < 6.26574);
+		// full 360 
+		assert(phy.radiansFromDegrees(360) > 6.28318 && phy.radiansFromDegrees(360) < 6.28320);
+		// above 360 
+		assert(phy.radiansFromDegrees(361) > 6.30063 && phy.radiansFromDegrees(361) < 6.30065);
 	}
 
 	void testFindDrag() {
@@ -140,7 +168,14 @@ private:
 	}
 
 	void testFindAreaOfCircle() {
+		Physics phy;
 
+		// negative 
+		assert(phy.findAreaOfCircle(-1) == 0);
+		// zero 
+		assert(phy.findAreaOfCircle(0) == 0);
+		// typical number 
+		assert(phy.findAreaOfCircle(50) > 7853.9815 && phy.findAreaOfCircle(50) < 7853.9817);
 	}
 
 	void testLinearInterpolation() {

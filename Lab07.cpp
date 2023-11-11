@@ -16,6 +16,7 @@
 #include "uiDraw.h"     // for RANDOM and DRAW*
 #include "ground.h"     // for GROUND
 #include "position.h"   // for POSITION
+#include "testPhysics.h"
 using namespace std;
 
 /*************************************************************************
@@ -128,6 +129,7 @@ void callBack(const Interface* pUI, void* p)
    gout.precision(1);
    gout << "Time since the bullet was fired: "
         << pDemo->time << "s\n";
+
 }
 
 double Position::metersFromPixels = 40.0;

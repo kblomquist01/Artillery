@@ -142,7 +142,6 @@ double Physics::radiansFromDegrees(double d) {
     return (d / 360) * 2 * 3.14159265;
 }
 
-
 /*******************************************
 * Drag Force Equation 
 * Find drag 
