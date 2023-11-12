@@ -363,7 +363,4 @@ private:
 
 
 	}
-	void testGetHistory() {
-
-	}
 };
