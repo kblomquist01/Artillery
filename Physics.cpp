@@ -37,7 +37,10 @@ double Physics::computeDistance(double s, double v, double a, double t) {
 
 double Physics::computeAcceleration(double f, double m)
 {
-    return f / m;
+    if (m > 0) {
+        return f / m;
+    }
+    return 0;
 }
 
 /***********************************************
@@ -101,6 +104,7 @@ double Physics::findVerticalComponent(double a, double total) {
     ***********************************************/
 
 double Physics::findHorizontalComponent(double a, double total) {
+    cout << sin(a) * total << "\n";
     return sin(a) * total;
 }
 /************************************************

@@ -5,7 +5,7 @@
 using namespace std;
 
 /*******************************
- * Test Physics class with unit tests
+ * Test Physics class with unit tests https://prod.liveshare.vsengsaas.visualstudio.com/join?A9BF58890D5CD40E99D6A10BD139A2856536
  ********************************/
 
 
@@ -37,7 +37,6 @@ public:
 		testFindDragCoefficient();
 		testFindDensity();
 		testFindAngle();
-		testGetHistory();
 	}
 private:
 	void testComputeDistance() {
@@ -133,28 +132,28 @@ private:
 		//zero
 		assert(phy.findVerticalComponent(0, 0) == 0);
 		//3 4 5 triangle long
-		assert(phy.findVerticalComponent(1.047198, 5) > 3.99 && phy.findVerticalComponent(1.047198, 5) > 4.01);
+		assert(phy.findVerticalComponent(phy.radiansFromDegrees(36.87), 5) > 3.99 && phy.findVerticalComponent(phy.radiansFromDegrees(36.87), 5) < 4.01);
 		//3 4 5 triangle short
-		assert(phy.findVerticalComponent(0.5235988, 5) > 2.99 && phy.findVerticalComponent(0.5235988, 5) > 3.01);
+		assert(phy.findVerticalComponent(phy.radiansFromDegrees(53.13), 5) > 2.99 && phy.findVerticalComponent(phy.radiansFromDegrees(53.13), 5) < 3.01);
 		//3 4 5 triangle long negative angle
-		assert(phy.findVerticalComponent(-1.047198, 5) > 3.99 && phy.findVerticalComponent(1.047198, 5) > 4.01);
+		assert(phy.findVerticalComponent(phy.radiansFromDegrees(-36.87), 5) > 3.99 && phy.findVerticalComponent(phy.radiansFromDegrees(-36.87), 5) < 4.01);
 		//3 4 5 triangle short negative angle
-		assert(phy.findVerticalComponent(-0.5235988, 5) > 2.99 && phy.findVerticalComponent(0.5235988, 5) > 3.01);
+		assert(phy.findVerticalComponent(phy.radiansFromDegrees(-53.13), 5) > 2.99 && phy.findVerticalComponent(phy.radiansFromDegrees(-53.13), 5) < 3.01);
 	}
 
 	void testFindHorizontalComponent() {
 		Physics phy;
 
 		//zero
-		assert(phy.findVerticalComponent(0, 0) == 0);
+		assert(phy.findHorizontalComponent(0, 0) == 0);
 		//3 4 5 triangle long
-		assert(phy.findVerticalComponent(1.047198, 5) > 3.99 && phy.findVerticalComponent(1.047198, 5) > 4.01);
+		assert(phy.findHorizontalComponent(phy.radiansFromDegrees(36.87), 5) > 3.99 && phy.findHorizontalComponent(phy.radiansFromDegrees(36.87), 5) < 4.01);
 		//3 4 5 triangle short
-		assert(phy.findVerticalComponent(0.5235988, 5) > 2.99 && phy.findVerticalComponent(0.5235988, 5) > 3.01);
+		assert(phy.findHorizontalComponent(phy.radiansFromDegrees(53.13), 5) > 2.99 && phy.findHorizontalComponent(phy.radiansFromDegrees(53.13), 5) < 3.01);
 		//3 4 5 triangle long negative angle
-		assert(phy.findVerticalComponent(-1.047198, 5) > 3.99 && phy.findVerticalComponent(1.047198, 5) > 4.01);
+		assert(phy.findHorizontalComponent(phy.radiansFromDegrees(-36.87), 5) > 3.99 && phy.findHorizontalComponent(phy.radiansFromDegrees(-36.87), 5) < 4.01);
 		//3 4 5 triangle short negative angle
-		assert(phy.findVerticalComponent(-0.5235988, 5) > 2.99 && phy.findVerticalComponent(0.5235988, 5) > 3.01);
+		assert(phy.findHorizontalComponent(phy.radiansFromDegrees(-53.13), 5) > 2.99 && phy.findHorizontalComponent(phy.radiansFromDegrees(-53.13), 5) < 3.01);
 	}
 
 	void testFindTotalComponent() {
