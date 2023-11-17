@@ -1,6 +1,9 @@
 #pragma once
+#include "position.h"
+
 class Physics
 {
+	friend class TestPhysics;
 public:
 	double computeDistance(double s, double v, double a, double t);
 	double computeAcceleration(double f, double m);
@@ -21,7 +24,9 @@ public:
 	double findDragCoefficient(double speed1);
 	double findDensity(double altitude1);
 	double findAngle(float dx, float dy);
-	double getHistory();
+	Position* getHistory();
+	void addHistory(Position position);
+	
 private:
 	#define WEIGHT   46.7   // Weight in KG
 	double x;
@@ -35,5 +40,6 @@ private:
 	int angle;
 	double distance; // in meters 
 	double hangTime; // in seconds 
+	Position history[3];
 };
 

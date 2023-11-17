@@ -104,7 +104,6 @@ double Physics::findVerticalComponent(double a, double total) {
     ***********************************************/
 
 double Physics::findHorizontalComponent(double a, double total) {
-    cout << sin(a) * total << "\n";
     return sin(a) * total;
 }
 /************************************************
@@ -158,7 +157,10 @@ double Physics::findDrag(double dragCoefficient, double density, double velocity
 * Area of a circle 
 *******************************************/
 double Physics::findAreaOfCircle(double radius) {
-    return 3.1415 * (radius * radius);
+    if (radius > 0) {
+        return 3.1415 * (radius * radius);
+    }
+    return 0;
 }
 
 /*******************************************
@@ -169,7 +171,10 @@ double Physics::findAreaOfCircle(double radius) {
 * and d,r are the coordinates of a point in the middle 
 *******************************************/
 double Physics::linearInterpolation(double d0, double r0, double d1, double r1, double r) {
-    return d0 + (r - r0) * ((d1 - d0) / (r1 - r0));
+    if (r1 - r0 != 0) {
+        return d0 + (r - r0) * ((d1 - d0) / (r1 - r0));
+    }
+    return 0;
 }
 
 /*******************************************
@@ -266,9 +271,15 @@ double Physics::findAngle(float dx, float dy)
     return atan2(dx, dy);
 }
 
-double Physics::getHistory()
+Position* Physics::getHistory()
 {
-    return 0.0;
+    return history;
+}
+
+void Physics::addHistory(Position position) {
+    history[0] = history[1];
+    history[1] = history[2];
+    history[2] = position;
 }
 
 

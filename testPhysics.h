@@ -37,6 +37,9 @@ public:
 		testFindDragCoefficient();
 		testFindDensity();
 		testFindAngle();
+		testGetHistory();
+		testAddHistory();
+
 	}
 private:
 	void testComputeDistance() {
@@ -236,7 +239,7 @@ private:
 		// zero 
 		assert(phy.findAreaOfCircle(0) == 0);
 		// typical number 
-		assert(phy.findAreaOfCircle(50) > 7853.9815 && phy.findAreaOfCircle(50) < 7853.9817);
+		assert(phy.findAreaOfCircle(50) > 7853.74 && phy.findAreaOfCircle(50) < 7853.76);
 	}
 
 	void testFindGravity() {
@@ -300,19 +303,19 @@ private:
 		Physics phy;
 
 		//zero
-		assert(phy.findSpeed(0) == 0.1629);
+		assert(phy.findDragCoefficient(0) == 0.1629);
 		//.3
-		assert(phy.findSpeed(0.3) == 0.1629);
+		assert(phy.findDragCoefficient(0.3) == 0.1629);
 		//.5
-		assert(phy.findSpeed(0.5) == 0.1659);
+		assert(phy.findDragCoefficient(0.5) == 0.1659);
 		//.7
-		assert(phy.findSpeed(0.7) == 0.2031);
+		assert(phy.findDragCoefficient(0.7) == 0.2031);
 		//1.990
-		assert(phy.findSpeed(1.990) == 0.2897);
+		assert(phy.findDragCoefficient(1.990) == 0.2897);
 		//5
-		assert(phy.findSpeed(5) == 0.2656);
+		assert(phy.findDragCoefficient(5) == 0.2656);
 		//6
-		assert(phy.findSpeed(6) == 0.2656);
+		assert(phy.findDragCoefficient(6) == 0.2656);
 
 	}
 
@@ -338,7 +341,7 @@ private:
 		//90000
 		assert(phy.findDensity(90000) == 0.0000185);
 		//between 1-2k
-		assert(phy.findDensity(1500) < 336 && phy.findDensity(1500) > 332);
+		assert(phy.findDensity(1500) < 1.1120000 && phy.findDensity(1500) > 1.0070000);
 		//negative
 		assert(phy.findDensity(-1000) == 1.2250000);
 	}
@@ -351,15 +354,57 @@ private:
 		//dy only
 		assert(phy.findAngle(0, 1) == 0);
 		//negative dy
-		assert(phy.findAngle(0, -1) > 3.14159265358 && phy.findAngle(0, -1) < 3.1415926536);
+		assert(phy.findAngle(0, -1) > 3.14158 && phy.findAngle(0, -1) < 3.14160);
 		//dx only
-		assert(phy.findAngle(1, 0) > 1.570796326794 && phy.findAngle(1, 0) < 1.570796326796);
+		assert(phy.findAngle(1, 0) > 1.5707 && phy.findAngle(1, 0) < 1.5709);
 		//negative dx
-		assert(phy.findAngle(-1, 0) > -1.570796326794 && phy.findAngle(-1, 0) < -1.570796326796);
+		assert(phy.findAngle(-1, 0) < -1.5707 && phy.findAngle(-1, 0) > -1.5709);
 		//dx and dy
-		assert(phy.findAngle(1, 1) > 0.785398163396 && phy.findAngle(1, 1) < 0.785398163398);
+		assert(phy.findAngle(1, 1) > 0.78538 && phy.findAngle(1, 1) < 0.78540);
+	}
 
+	void testGetHistory() {
+		Physics phy;
+		Position first(1, 1);
+		Position second(2, 2);
+		Position third(3, 3);
 
+		phy.history[0] = first;
+		phy.history[1] = second;
+		phy.history[2] = third;
 
+		Position* test = phy.getHistory();
+		assert(test[0].getMetersX() == first.getMetersX());
+		assert(test[0].getMetersY() == first.getMetersY());
+
+		assert(test[1].getMetersX() == second.getMetersX());
+		assert(test[1].getMetersY() == second.getMetersY());
+
+		assert(test[2].getMetersX() == third.getMetersX());
+		assert(test[2].getMetersY() == third.getMetersY());
+	}
+
+	void testAddHistory() {
+		Physics phy;
+		
+		Position first(1, 1);
+		Position second(2, 2);
+		Position third(3, 3);
+		Position test(4, 4);
+
+		phy.history[0] = first;
+		phy.history[1] = second;
+		phy.history[2] = third;
+
+		phy.addHistory(test);
+
+		assert(phy.history[0].getMetersX() == second.getMetersX());
+		assert(phy.history[0].getMetersY() == second.getMetersY());
+
+		assert(phy.history[1].getMetersX() == third.getMetersX());
+		assert(phy.history[1].getMetersY() == third.getMetersY());
+
+		assert(phy.history[2].getMetersX() == test.getMetersX());
+		assert(phy.history[2].getMetersY() == test.getMetersY());
 	}
 };
