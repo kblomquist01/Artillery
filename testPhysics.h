@@ -22,23 +22,57 @@ class TestPhysics
 {
 public:
 	void run() {
+		cout << "testing ComputeDistance\n";
 		testComputeDistance();
+		cout << "ComputeDistance passed\n\n";
+		cout << "testing computeAcceleration\n";
 		testComputeAcceleration();
+		cout << "computeAcceleration passed\n\n";
+		cout << "testing ComputeVelocity\n";
 		testComputeVelocity();
+		cout << "ComputeVelocity passed\n\n";
+		cout << "testing VerticalComponent\n";
 		testFindVerticalComponent();
+		cout << "VerticalComponent passed\n\n";
+		cout << "testing FindHorizontalComponent\n";
 		testFindHorizontalComponent();
+		cout << "FindHorizontalComponent passed\n\n";
+		cout << "testing FindTotalComponent\n";
 		testFindTotalComponent();
+		cout << "FindTotalComponent passed\n\n";
+		cout << "testing RadiansFromDegrees\n";
 		testRadiansFromDegrees();
+		cout << "RadiansFromDegrees passed\n\n";
+		cout << "testing FindDrag\n";
 		testFindDrag();
+		cout << "FindDrag passed\n\n";
+		cout << "testing FindAreaOfCircle\n";
 		testFindAreaOfCircle();
+		cout << "FindAreaOfCircle passed\n\n";
+		cout << "testing LinearInterpolation\n";
 		testLinearInterpolation();
+		cout << "LinearInterpolation passed\n\n";
+		cout << "testing FindGravity\n";
 		testFindGravity();
+		cout << "FindGravity passed\n\n";
+		cout << "testing FindSpeed\n";
 		testFindSpeed();
+		cout << "FindSpeed passed\n\n";
+		cout << "testing FindDragCoefficient\n";
 		testFindDragCoefficient();
+		cout << "FindDragCoefficient passed\n\n";
+		cout << "testing FindDensity\n";
 		testFindDensity();
+		cout << "FindDensity passed\n\n";
+		cout << "testing FindAngle\n";
 		testFindAngle();
+		cout << "FindAngle passed\n\n";
+		cout << "testing GetHistory\n";
 		testGetHistory();
+		cout << "GetHistory passed\n\n";
+		cout << "testing AddHistory\n";
 		testAddHistory();
+		cout << "AddHistory passed\n\n";
 
 	}
 private:
