@@ -5,6 +5,8 @@ class Physics
 {
 	friend class TestPhysics;
 public:
+	Physics();
+	void shootBullet(double angle, Position pHowtzer);
 	double computeDistance(double s, double v, double a, double t);
 	double computeAcceleration(double f, double m);
 	double computeVelocity(double v, double a, double t);
@@ -24,6 +26,7 @@ public:
 	double findDragCoefficient(double speed1);
 	double findDensity(double altitude1);
 	double findAngle(float dx, float dy);
+	void compute();
 	Position* getHistory();
 	void addHistory(Position position);
 	
@@ -36,10 +39,13 @@ private:
 	double ddx;
 	double ddy;
 	double acceleration;
+	double mach;
+	double dragCoefficient;
+	double airDensity;
+	double surfaceArea;
+	double gravity;
+	float velocity;
+	double angle;
 	double drag;
-	int angle;
-	double distance; // in meters 
-	double hangTime; // in seconds 
-	Position history[3];
+	Position history[20];
 };
-

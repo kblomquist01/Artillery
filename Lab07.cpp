@@ -32,10 +32,11 @@ public:
       ground(ptUpperRight),
       time(0.0),
       angle(0.0)
+       
    {
       // Set the horizontal position of the howitzer. This should be random.
       ptHowitzer.setPixelsX(Position(ptUpperRight).getPixelsX() / 2.0);
-
+      
       // Generate the ground and set the vertical position of the howitzer.
       ground.reset(ptHowitzer);
 
@@ -53,6 +54,7 @@ public:
    Position  projectilePath[20];  // path of the projectile
    Position  ptHowitzer;          // location of the howitzer
    Position  ptUpperRight;        // size of the screen
+   Physics physics;
    double angle;                  // angle of the howitzer 
    double time;                   // amount of time since the last firing
 };
@@ -70,10 +72,6 @@ void callBack(const Interface* pUI, void* p)
    // is the first step of every single callback function in OpenGL. 
    Demo* pDemo = (Demo*)p;
 
-   //
-   // accept input
-   // ask for angle 
-
    // move a large amount
    if (pUI->isRight())
       pDemo->angle += 0.05;
@@ -87,26 +85,49 @@ void callBack(const Interface* pUI, void* p)
       pDemo->angle += (pDemo->angle >= 0 ? 0.003 : -0.003);
 
    // fire that gun
-   if (pUI->isSpace())
-      pDemo->time = 0.0;
+   if (pUI->isSpace()) {
+       pDemo->time = 0.0;
+       pDemo->physics.shootBullet(pDemo->angle, pDemo->ptHowitzer);
+   }
+      
 
-   //
-   // perform all the game logic
-   //
+   
+   pDemo->physics.compute();
+ 
+       
+   for (int i = 0; i < 20; i++) {
+
+      /* cout << pDemo->projectilePath[i];*/
+
+       pDemo->projectilePath[i] = pDemo->physics.getHistory()[i];
+       /*cout << pDemo->projectilePath[i];
+       cout << pDemo->physics.getHistory()[i] << "\n\n\n";*/
+   }
+
+  
 
    // advance time by half a second.
    pDemo->time += 0.5;
 
    // move the projectile across the screen
-   for (int i = 0; i < 20; i++)
-   {
-      // this bullet is moving left at 1 pixel per frame
-      double x = pDemo->projectilePath[i].getPixelsX();
-      x -= 1.0;
-      if (x < 0)
-         x = pDemo->ptUpperRight.getPixelsX();
-      pDemo->projectilePath[i].setPixelsX(x);
-   }
+   
+
+   /**pDemo->projectilePath = *pDemo->physics.getHistory();*/
+   
+
+
+   //for (int i = 0; i < 20; i++)
+   //{
+	  // // this bullet is moving left at 1 pixel per frame
+	  // double x = pDemo->projectilePath[i].getPixelsX();
+	  // x -= 1.0;
+	  // if (x < 0)
+		 //  x = pDemo->ptUpperRight.getPixelsX();
+	  // pDemo->projectilePath[i].setPixelsX(x);
+   //}
+
+
+
    // see if hitGround() and hitTarget() 
 
    //
@@ -122,14 +143,17 @@ void callBack(const Interface* pUI, void* p)
    gout.drawHowitzer(pDemo->ptHowitzer, pDemo->angle, pDemo->time);
 
    // draw the projectile
-   for (int i = 0; i < 20; i++)
+   for (int i = 19; i > 0; i--)
       gout.drawProjectile(pDemo->projectilePath[i], 0.5 * (double)i);
 
    // draw some text on the screen
    gout.setf(ios::fixed | ios::showpoint);
    gout.precision(1);
-   gout << "Time since the bullet was fired: "
-        << pDemo->time << "s\n";
+   /*gout << "Gun angle: " << pDemo->physics.angle
+        << "Altitude: " << pDemo->physics.altitude
+        << "Velocity: "
+        << "Distance: "
+        << "Projectile fly time: " << pDemo->time << "s\n";*/
 
 }
 
@@ -149,22 +173,22 @@ int WINAPI wWinMain(
 int main(int argc, char** argv)
 #endif // !_WIN32
 {
-   //// Initialize OpenGL
-   //Position ptUpperRight;
-   //ptUpperRight.setPixelsX(700.0);
-   //ptUpperRight.setPixelsY(500.0);
-   //Position().setZoom(40.0 /* 42 meters equals 1 pixel */);
-   //Interface ui(0, NULL,
-   //   "Demo",   /* name on the window */
-   //   ptUpperRight);
+   // Initialize OpenGL
+   Position ptUpperRight;
+   ptUpperRight.setPixelsX(700.0);
+   ptUpperRight.setPixelsY(500.0);
+   Position().setZoom(40.0 /* 42 meters equals 1 pixel */);
+   Interface ui(0, NULL,
+      "Demo",   /* name on the window */
+      ptUpperRight);
 
-   //// Initialize the demo
-   //Demo demo(ptUpperRight);
+   // Initialize the demo
+   Demo demo(ptUpperRight);
 
-   //// set everything into action
-   //ui.run(callBack, &demo);
-    TestPhysics test;
-    test.run();
+   // set everything into action
+   ui.run(callBack, &demo);
+    /*TestPhysics test;*/
+    /*test.run();*/
 
    return 0;
 }

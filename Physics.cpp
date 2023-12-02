@@ -6,6 +6,30 @@ using namespace std;
 
 #define WEIGHT   46.7   // Weight in KG
 
+Physics::Physics() {
+    angle = 0;
+    x = 14000;
+    y = 4000;
+    velocity = 827;
+    dx = 0;
+    dy = 0;
+    dragCoefficient = 0;
+    mach = 0;
+    drag = 0;
+    airDensity = 0;
+    surfaceArea = 3.14159 * (0.077445 * 0.077445);
+    gravity = -9.8;
+
+    Position defaultPos(14000,4000);
+    cout << defaultPos;
+
+    for (int i = 0; i < 20; i++) {
+        history[i] = defaultPos;
+        defaultPos.setMetersX(defaultPos.getMetersX() + 40);
+    }
+    
+};
+
 /***************************************************
     * COMPUTE DISTANCE 
     * Apply inertia to compute a new position using the distance equation.
@@ -277,11 +301,55 @@ Position* Physics::getHistory()
 }
 
 void Physics::addHistory(Position position) {
-    history[0] = history[1];
-    history[1] = history[2];
-    history[2] = position;
+    for (int i = 19; i >= 1; i--) {
+        history[i] = history[i - 1];
+    }
+    history[0] = position;
 }
 
+void Physics::shootBullet(double angle, Position pHowtzer) {
+    x = pHowtzer.getMetersX();
+    y = pHowtzer.getMetersY();
+    velocity = 827;
+    this->angle = angle;
+    dx = findHorizontalComponent(this->angle, velocity);
+    dy = findVerticalComponent(this->angle, velocity);
+}
+
+void Physics::compute() {
+
+
+    gravity = findGravity(y);
+    airDensity = (findDensity(y));
+    angle = findAngle(dx, dy);
+    velocity = findTotalComponent(dx, dy);
+    mach = velocity / findSpeed(y);
+
+    dragCoefficient = findDragCoefficient(mach);
+
+
+    drag = findDrag(dragCoefficient, airDensity, velocity, surfaceArea);
+    float acceleration = computeAcceleration(drag, WEIGHT);
+    float ddx = acceleration * -sin(angle);
+    float ddy = acceleration * -cos(angle) + gravity;
+
+    // computeAcceleration parameters are (force, then mass) 
+    dy = computeVelocity(dy, ddy, .5);
+    dx = computeVelocity(dx, ddx, .5);
+
+    x = computeDistance(x, dx, ddx, .5);
+    y = computeDistance(y, dy, ddy, .5);
+
+    
+
+    Position bulletPos(x, y);
+    addHistory(bulletPos);
+    if (y <= 0) {
+        x = linearInterpolation(x, y, x + dx / 100, y + dy / 100, 0);
+        y = 0;
+    }
+
+}
 
 //int main() {
 //    double angle = radiansFromDegrees(-75);
@@ -297,7 +365,7 @@ void Physics::addHistory(Position position) {
 //    double drag = 0;
 //    double airDensity = 0.6;
 //    double surfaceArea = 3.14159 * (0.077445 * 0.077445);
-//    double gravity = -9.8;
+//    double gravity;
 //
 //    double distance = 0; // in meters 
 //    double hangTime = 0;

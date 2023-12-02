@@ -148,6 +148,7 @@ void ogstream :: drawProjectile(const Position& pos, double age)
    posBegin.setPixelsY(pos.getPixelsY() - 1.5);
    posEnd.setPixelsX(pos.getPixelsX() + 1.5);
    posEnd.setPixelsY(pos.getPixelsY() + 1.5);
+  /* cout << pos.getPixelsX() << ", " << pos.getPixelsY() << "\n";*/
    drawRectangle(posBegin, posEnd, color /* red % */, color /* green % */, color /* blue % */);
 }
 
