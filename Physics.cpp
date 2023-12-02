@@ -20,8 +20,7 @@ Physics::Physics() {
     surfaceArea = 3.14159 * (0.077445 * 0.077445);
     gravity = -9.8;
 
-    Position defaultPos(14000,4000);
-    cout << defaultPos;
+    Position defaultPos(14000,14000);
 
     for (int i = 0; i < 20; i++) {
         history[i] = defaultPos;
@@ -314,11 +313,16 @@ void Physics::shootBullet(double angle, Position pHowtzer) {
     this->angle = angle;
     dx = findHorizontalComponent(this->angle, velocity);
     dy = findVerticalComponent(this->angle, velocity);
+
+    for (int i = 0; i < 20; i++) {
+        addHistory(Position(x, y));
+    }
 }
 
 void Physics::compute() {
 
-
+    x = history[0].getMetersX();
+    y = history[0].getMetersY();
     gravity = findGravity(y);
     airDensity = (findDensity(y));
     angle = findAngle(dx, dy);

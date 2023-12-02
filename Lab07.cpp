@@ -90,18 +90,17 @@ void callBack(const Interface* pUI, void* p)
        pDemo->physics.shootBullet(pDemo->angle, pDemo->ptHowitzer);
    }
       
-
+   cout << pDemo->projectilePath[0].getMetersY() << ", " << pDemo->ground.getElevationMeters(pDemo->projectilePath[0]);
+   cout << true;
+   cout << ((bool(pDemo->projectilePath[0].getMetersY() >= pDemo->ground.getElevationMeters(pDemo->projectilePath[0])))) << "\n";
+   if (pDemo->projectilePath[0].getMetersY() >= pDemo->ground.getElevationMeters(pDemo->projectilePath[0])) {
+       pDemo->physics.compute();
+   }
    
-   pDemo->physics.compute();
  
-       
+   // sets projectile path to path History
    for (int i = 0; i < 20; i++) {
-
-      /* cout << pDemo->projectilePath[i];*/
-
        pDemo->projectilePath[i] = pDemo->physics.getHistory()[i];
-       /*cout << pDemo->projectilePath[i];
-       cout << pDemo->physics.getHistory()[i] << "\n\n\n";*/
    }
 
   
@@ -110,12 +109,7 @@ void callBack(const Interface* pUI, void* p)
    pDemo->time += 0.5;
 
    // move the projectile across the screen
-   
-
-   /**pDemo->projectilePath = *pDemo->physics.getHistory();*/
-   
-
-
+  
    //for (int i = 0; i < 20; i++)
    //{
 	  // // this bullet is moving left at 1 pixel per frame
@@ -130,7 +124,23 @@ void callBack(const Interface* pUI, void* p)
 
    // see if hitGround() and hitTarget() 
 
-   //
+   if (pDemo->projectilePath[0].getMetersY() <= pDemo->ground.getElevationMeters(pDemo->projectilePath[0])) {
+       pDemo->physics.addHistory(pDemo->physics.getHistory()[0]);
+   }
+   Position target = pDemo->ground.getTarget();
+   Position bullet = pDemo->physics.getHistory()[0];
+   // bullet is in x,y coordinates of the target
+   if (target.getMetersX() - 200 <= bullet.getMetersX() && target.getMetersX() + 200 >= bullet.getMetersX()) {
+       if (target.getMetersY() - 200 <= bullet.getMetersY() && target.getMetersY() + 200 >= bullet.getMetersY()) {
+
+           pDemo->ground.reset(pDemo->ptHowitzer);
+
+           for (int i = 0; i < 20; i++) {
+               pDemo->physics.addHistory(Position(0, 0));
+           }
+       }
+   }
+       
    // draw everything
    //
 
