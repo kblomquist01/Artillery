@@ -90,9 +90,6 @@ void callBack(const Interface* pUI, void* p)
        pDemo->physics.shootBullet(pDemo->angle, pDemo->ptHowitzer);
    }
       
-   cout << pDemo->projectilePath[0].getMetersY() << ", " << pDemo->ground.getElevationMeters(pDemo->projectilePath[0]);
-   cout << true;
-   cout << ((bool(pDemo->projectilePath[0].getMetersY() >= pDemo->ground.getElevationMeters(pDemo->projectilePath[0])))) << "\n";
    if (pDemo->projectilePath[0].getMetersY() >= pDemo->ground.getElevationMeters(pDemo->projectilePath[0])) {
        pDemo->physics.compute();
    }
