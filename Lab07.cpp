@@ -89,7 +89,8 @@ void callBack(const Interface* pUI, void* p)
        pDemo->time = 0.0;
        pDemo->physics.shootBullet(pDemo->angle, pDemo->ptHowitzer);
    }
-      
+   
+   // move bullet accross the screen
    if (pDemo->projectilePath[0].getMetersY() >= pDemo->ground.getElevationMeters(pDemo->projectilePath[0])) {
        pDemo->physics.compute();
    }
@@ -100,24 +101,8 @@ void callBack(const Interface* pUI, void* p)
        pDemo->projectilePath[i] = pDemo->physics.getHistory()[i];
    }
 
-  
-
    // advance time by half a second.
    pDemo->time += 0.5;
-
-   // move the projectile across the screen
-  
-   //for (int i = 0; i < 20; i++)
-   //{
-	  // // this bullet is moving left at 1 pixel per frame
-	  // double x = pDemo->projectilePath[i].getPixelsX();
-	  // x -= 1.0;
-	  // if (x < 0)
-		 //  x = pDemo->ptUpperRight.getPixelsX();
-	  // pDemo->projectilePath[i].setPixelsX(x);
-   //}
-
-
 
    // see if hitGround() and hitTarget() 
 

@@ -294,11 +294,17 @@ double Physics::findAngle(float dx, float dy)
     return atan2(dx, dy);
 }
 
+/*******************************************
+* Return last 20 positions of the bullet
+*******************************************/
 Position* Physics::getHistory()
 {
     return history;
 }
 
+/*******************************************
+* removes last position of history and adds the new position to the front
+*******************************************/
 void Physics::addHistory(Position position) {
     for (int i = 19; i >= 1; i--) {
         history[i] = history[i - 1];
@@ -306,6 +312,10 @@ void Physics::addHistory(Position position) {
     history[0] = position;
 }
 
+/*******************************************
+* shoots the bullet
+* sets bullet velocity, angle, and position
+*******************************************/
 void Physics::shootBullet(double angle, Position pHowtzer) {
     x = pHowtzer.getMetersX();
     y = pHowtzer.getMetersY();
@@ -319,6 +329,9 @@ void Physics::shootBullet(double angle, Position pHowtzer) {
     }
 }
 
+/*******************************************
+* puts the whole class together to find the new position of the bullet
+*******************************************/
 void Physics::compute() {
 
     x = history[0].getMetersX();
@@ -354,64 +367,3 @@ void Physics::compute() {
     }
 
 }
-
-//int main() {
-//    double angle = radiansFromDegrees(-75);
-//    double x = 0;
-//    double y = .25;
-//    float velocity = 827;
-//    float dx = findHorizontalComponent(angle, velocity);
-//    float dy = findVerticalComponent(angle, velocity);
-//    double dragCoefficient = 0;
-//    double mach = 0;
-//    double dragx = 0.3;
-//    double dragy = .3;
-//    double drag = 0;
-//    double airDensity = 0.6;
-//    double surfaceArea = 3.14159 * (0.077445 * 0.077445);
-//    double gravity;
-//
-//    double distance = 0; // in meters 
-//    double hangTime = 0;
-//    
-//    while(y + dy/100> 0) {
-//
-//        gravity = findGravity(y);
-//        airDensity = (findDensity(y));
-//        angle = findAngle(dx, dy);
-//        velocity = findTotalComponent(dx, dy);
-//        mach = velocity / findSpeed(y);
-//
-//        dragCoefficient = findDragCoefficient(mach);
-//
-//        
-//        drag = findDrag(dragCoefficient, airDensity, velocity, surfaceArea);
-//        float acceleration = computeAcceleration(drag, WEIGHT);
-//        float ddx = acceleration * -sin(angle);
-//        float ddy = acceleration * -cos(angle) + gravity;
-//
-//        // computeAcceleration parameters are (force, then mass) 
-//        dy = computeVelocity(dy, ddy, .01);
-//        dx = computeVelocity(dx, ddx, .01);
-//
-//        x = computeDistance(x, dx, ddx, .01);
-//        y = computeDistance(y, dy, ddy, .01);
-//
-//        hangTime += .01;
-//        // << "Gravity: " << gravity << " X: " << x
-//
-//        cout << std::fixed << std::showpoint;
-//        cout << std::setprecision(4);
-//        cout << " airDensity: " << airDensity << " Drag: " << drag << " Velocity: " << velocity;
-//        cout << " DY:  " << dy << " DX: " << dx  << " Y: " << y << " angle: " << angle;
-//        cout << " Drag Coefficient: " << dragCoefficient << " Mach: " << mach << "\n";
-//    }
-//
-//    x = linearInterpolation(x, y, x + dx/100, y + dy/100, 0);
-//    y = 0;
-//
-//    cout << "distance: " << x << "m Altitude: " << y << "m Hang time: " << hangTime << "s";
-//
-//
-//    return 0;
-//}
